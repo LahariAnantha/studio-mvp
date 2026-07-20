@@ -21,10 +21,10 @@ export default function MainContent() {
       <div className="panel">
         <h3 className="panel-title">
           {currentRoom.tabs?.find(
-            (t) => t.label.toLowerCase().replace(" ", "-") === tab
+            (t) => t.label.toLowerCase().replaceAll(" ", "-") === tab
           )?.icon ?? "📋"}{" "}
           {currentRoom.tabs?.find(
-            (t) => t.label.toLowerCase().replace(" ", "-") === tab
+            (t) => t.label.toLowerCase().replaceAll(" ", "-") === tab
           )?.label ?? "Panel"}
         </h3>
         <div className="empty-state">

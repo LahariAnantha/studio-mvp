@@ -8,9 +8,9 @@ export default function TabBar() {
       {currentRoom.tabs.map((tab) => (
         <button
           key={tab.id}
-          className={`tab-btn ${activeTab === tab.label.toLowerCase().replace(" ", "-") ? "active" : ""}`}
+          className={`tab-btn ${activeTab === tab.label.toLowerCase().replaceAll(" ", "-") ? "active" : ""}`}
           onClick={() =>
-            setActiveTab(tab.label.toLowerCase().replace(" ", "-"))
+            setActiveTab(tab.label.toLowerCase().replaceAll(" ", "-"))
           }
         >
           <span>{tab.icon}</span>
