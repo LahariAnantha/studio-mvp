@@ -1,10 +1,12 @@
 import { createContext, useContext, useState } from "react";
 import { USERS, WORKSPACES } from "../data/mockData";
+import { provisionWorkspace } from "../lib/workspaceGeneration";
 
 const AppContext = createContext(null);
 
 export function AppProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(USERS.admin);
+  const [workspaces, setWorkspaces] = useState(WORKSPACES);
   const [currentWorkspace, setCurrentWorkspace] = useState(WORKSPACES[0]);
   const [currentRoom, setCurrentRoom] = useState(WORKSPACES[0].rooms[0]);
   const [activeTab, setActiveTab] = useState("messages");
@@ -14,7 +16,7 @@ export function AppProvider({ children }) {
   }
 
   function switchWorkspace(wsId) {
-    const ws = WORKSPACES.find((w) => w.id === wsId);
+    const ws = workspaces.find((w) => w.id === wsId);
     if (ws) {
       setCurrentWorkspace(ws);
       setCurrentRoom(ws.rooms[0]);
@@ -30,6 +32,14 @@ export function AppProvider({ children }) {
     }
   }
 
+  function commitWorkspace(config, intent) {
+    const customWorkspace = provisionWorkspace(config, intent);
+    setWorkspaces((prev) => [customWorkspace, ...prev]);
+    setCurrentWorkspace(customWorkspace);
+    setCurrentRoom(customWorkspace.rooms[0]);
+    setActiveTab("messages");
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -41,7 +51,8 @@ export function AppProvider({ children }) {
         switchUser,
         switchWorkspace,
         switchRoom,
-        workspaces: WORKSPACES,
+        commitWorkspace,
+        workspaces,
         users: USERS,
       }}
     >
